@@ -3,6 +3,7 @@ package com.derekdileo.expensetrackerrestapi.controller;
 import com.derekdileo.expensetrackerrestapi.entity.Expense;
 import com.derekdileo.expensetrackerrestapi.service.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,11 +29,13 @@ public class ExpenseController {
         return expenseService.getExpenseById(id);
     }
 
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @DeleteMapping("/expenses")
     public void deleteExpenseById(@RequestParam Long id) {
         expenseService.deleteExpenseById(id);
     }
 
+    @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping("/expenses")
     public Expense saveExpenseDetails(@RequestBody Expense expense) {
         return expenseService.saveExpenseDetails(expense);
