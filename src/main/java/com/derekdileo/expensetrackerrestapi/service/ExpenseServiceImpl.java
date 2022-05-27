@@ -70,7 +70,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
 
     @Override
-    public Expense updateExpenseDetails(Long id, Expense expense) {
+    public Expense updateExpense(Long id, Expense expense) {
         // Get existing expense object for comparison
         Expense existingExpense = readExpenseById(id);
 

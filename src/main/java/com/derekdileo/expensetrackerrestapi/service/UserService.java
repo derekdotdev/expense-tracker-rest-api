@@ -8,4 +8,6 @@ public interface UserService {
 
     // Read information about current user
     User readUserById(Long id);
+
+    User updateUser(User user, Long id);
 }

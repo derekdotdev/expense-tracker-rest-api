@@ -21,7 +21,7 @@ public interface ExpenseService {
 
     List<Expense> readExpensesByDate(Date startDate, Date endDate, Pageable page);
 
-    Expense updateExpenseDetails(Long id, Expense expense);
+    Expense updateExpense(Long id, Expense expense);
 
     void deleteExpenseById(Long id);
 

@@ -58,7 +58,7 @@ public class ExpenseController {
 
     @PutMapping("/expenses/{id}")
     public Expense updateExpenseDetails(@RequestBody Expense expense, @PathVariable Long id) {
-        return expenseService.updateExpenseDetails(id, expense);
+        return expenseService.updateExpense(id, expense);
     }
 
     @ResponseStatus(value = HttpStatus.NO_CONTENT)

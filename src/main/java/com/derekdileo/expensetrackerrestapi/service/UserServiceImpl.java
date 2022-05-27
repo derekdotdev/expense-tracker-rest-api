@@ -13,17 +13,17 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService{
 
     // Runtime constructor-based injection of UserRepository dependency
-    private final UserRepository userRepository;
+    private final UserRepository userRepo;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserServiceImpl(UserRepository userRepo) {
+        this.userRepo = userRepo;
     }
 
     @Override
     public User createUser(UserModel user) {
         // Validate email is unique
-        if (userRepository.existsByEmail(user.getEmail())) {
+        if (userRepo.existsByEmail(user.getEmail())) {
             throw new ItemAlreadyExistsException("An account already exists with email: " + user.getEmail());
         }
 
@@ -33,13 +33,30 @@ public class UserServiceImpl implements UserService{
         // copyWith and persist to repo
         BeanUtils.copyProperties(user, newUser);
 
-        return userRepository.save(newUser);
+        return userRepo.save(newUser);
     }
 
     @Override
     public User readUserById(Long id) {
         // findById returns Optional. Use orElseThrow method to handle user not found
-        return userRepository.findById(id).orElseThrow(
+        return userRepo.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("User not found for the id: " + id));
+    }
+
+    @Override
+    public User updateUser(User user, Long id) {
+        // Get existing user object for comparison
+        User existingUser = readUserById(id);
+
+        // Set fields to existing user object (only if new information exists)
+        existingUser.setName(user.getName() != null ? user.getName() : existingUser.getName());
+
+        existingUser.setEmail(user.getEmail() != null ? user.getEmail() : existingUser.getEmail());
+
+        existingUser.setPassword(user.getPassword() != null ? user.getPassword() : existingUser.getPassword());
+
+        existingUser.setDob(user.getDob() != null ? user.getDob() : existingUser.getDob());
+
+        return userRepo.save(existingUser);
     }
 }
