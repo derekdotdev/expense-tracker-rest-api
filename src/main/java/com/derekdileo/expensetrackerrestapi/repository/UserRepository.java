@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    // Check existence of email address (unique)
+    Boolean existsByEmail(String email);
 }
