@@ -2,7 +2,6 @@ package com.derekdileo.expensetrackerrestapi.controller;
 
 import com.derekdileo.expensetrackerrestapi.entity.User;
 import com.derekdileo.expensetrackerrestapi.entity.UserModel;
-import com.derekdileo.expensetrackerrestapi.service.ExpenseService;
 import com.derekdileo.expensetrackerrestapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RestController
 public class UserController {
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> createUser(@RequestBody UserModel user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody UserModel user) {
         return new ResponseEntity<User>(userService.createUser(user), HttpStatus.CREATED);
     }
 

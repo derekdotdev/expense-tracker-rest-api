@@ -1,5 +1,6 @@
 package com.derekdileo.expensetrackerrestapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    @JsonIgnore // Hide pw when returning User entity from DB
     private String password;
 
     private Date dob;
