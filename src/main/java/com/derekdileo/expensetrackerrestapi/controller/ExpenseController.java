@@ -21,6 +21,7 @@ public class ExpenseController {
         this.expenseService = expenseService;
     }
 
+    // Pageable makes use of page, size and sort query parameters
     @GetMapping("/expenses")
     public List<Expense> getAllExpenses(Pageable page) {
         return expenseService.getAllExpenses(page).toList();
