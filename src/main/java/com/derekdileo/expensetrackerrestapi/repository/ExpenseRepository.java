@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import com.derekdileo.expensetrackerrestapi.entity.Expense;
 
+import java.sql.Date;
+
 /*
 * A class to query the database using JPA methods which can be found at:
 * https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods
@@ -19,5 +21,8 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
     // SELECT * FROM tbl_expenses WHERE name LIKE '%keyword%'
     Page<Expense> findByNameContaining(String keyword, Pageable page);
+
+    // SELECT * FROM tbl_expenses WHERE date BETWEEN 'startDate' AND 'endDate'
+    Page<Expense> findByDateBetween(Date startDate, Date endDate, Pageable page);
 
 }

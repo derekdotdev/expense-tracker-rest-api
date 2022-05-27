@@ -4,6 +4,7 @@ import com.derekdileo.expensetrackerrestapi.entity.Expense;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.sql.Date;
 import java.util.List;
 
 public interface ExpenseService {
@@ -13,6 +14,8 @@ public interface ExpenseService {
     List<Expense> getExpensesByCategory(String category, Pageable page);
 
     List<Expense> getExpensesByName(String name, Pageable page);
+
+    List<Expense> getExpensesByDate(Date startDate, Date endDate, Pageable page);
 
     Expense getExpenseById(Long id);
 
