@@ -23,9 +23,19 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public Page<Expense> getAllExpenses(Pageable page) {
+    public Page<Expense> getExpenses(Pageable page) {
         // Call JPA repository method
         return expenseRepo.findAll(page);
+    }
+
+    @Override
+    public List<Expense> getExpensesByCategory(String category, Pageable page) {
+        return expenseRepo.findByCategory(category, page).toList();
+    }
+
+    @Override
+    public List<Expense> getExpensesByName(String name, Pageable page) {
+        return expenseRepo.findByNameContaining(name, page).toList();
     }
 
     @Override
@@ -43,7 +53,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public Expense saveExpenseDetails(Expense expense) {
+    public Expense createExpense(Expense expense) {
         return expenseRepo.save(expense);
     }
 
@@ -60,11 +70,5 @@ public class ExpenseServiceImpl implements ExpenseService {
         existingExpense.setDate(expense.getDate() != null ? expense.getDate() : existingExpense.getDate());
         return expenseRepo.save(existingExpense);
     }
-
-    @Override
-    public List<Expense> readByCategory(String category, Pageable page) {
-        return expenseRepo.findByCategory(category, page).toList();
-    }
-
 
 }

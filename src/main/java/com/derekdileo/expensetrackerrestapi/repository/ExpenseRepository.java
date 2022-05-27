@@ -14,8 +14,10 @@ import com.derekdileo.expensetrackerrestapi.entity.Expense;
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
-    // SELECT * FROM tbl_expenses WHERE category=?
-    // (with pageable pagination and sorting)
+    // SELECT * FROM tbl_expenses WHERE category=?   (with pagination and sorting)
     Page<Expense> findByCategory(String category, Pageable page);
+
+    // SELECT * FROM tbl_expenses WHERE name LIKE '%keyword%'
+    Page<Expense> findByNameContaining(String keyword, Pageable page);
 
 }

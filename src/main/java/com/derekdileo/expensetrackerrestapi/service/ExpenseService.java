@@ -8,15 +8,18 @@ import java.util.List;
 
 public interface ExpenseService {
 
-    Page<Expense> getAllExpenses(Pageable page);
+    Page<Expense> getExpenses(Pageable page);
+
+    List<Expense> getExpensesByCategory(String category, Pageable page);
+
+    List<Expense> getExpensesByName(String name, Pageable page);
 
     Expense getExpenseById(Long id);
 
     void deleteExpenseById(Long id);
 
-    Expense saveExpenseDetails(Expense expense);
+    Expense createExpense(Expense expense);
 
     Expense updateExpenseDetails(Long id, Expense expense);
 
-    List<Expense> readByCategory(String category, Pageable page);
 }

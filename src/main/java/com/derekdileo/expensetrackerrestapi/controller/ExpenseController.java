@@ -21,15 +21,26 @@ public class ExpenseController {
         this.expenseService = expenseService;
     }
 
+    @ResponseStatus(value = HttpStatus.CREATED)
+    @PostMapping("/expenses")
+    public Expense createExpense(@Valid @RequestBody Expense expense) {
+        return expenseService.createExpense(expense);
+    }
+
     // Pageable makes use of page, size and sort query parameters
     @GetMapping("/expenses")
-    public List<Expense> getAllExpenses(Pageable page) {
-        return expenseService.getAllExpenses(page).toList();
+    public List<Expense> getExpenses(Pageable page) {
+        return expenseService.getExpenses(page).toList();
     }
 
     @GetMapping("/expenses/category")
-    public List<Expense> getAllExpensesByCategory(@RequestParam String category, Pageable page) {
-        return expenseService.readByCategory(category, page);
+    public List<Expense> getExpensesByCategory(@RequestParam String category, Pageable page) {
+        return expenseService.getExpensesByCategory(category, page);
+    }
+
+    @GetMapping("/expenses/name")
+    public List<Expense> getExpensesByName(@RequestParam String keyword, Pageable page) {
+        return expenseService.getExpensesByName(keyword, page);
     }
 
     @GetMapping("/expenses/{id}")
@@ -37,22 +48,15 @@ public class ExpenseController {
         return expenseService.getExpenseById(id);
     }
 
+    @PutMapping("/expenses/{id}")
+    public Expense updateExpenseDetails(@RequestBody Expense expense, @PathVariable Long id) {
+        return expenseService.updateExpenseDetails(id, expense);
+    }
 
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @DeleteMapping("/expenses")
     public void deleteExpenseById(@RequestParam Long id) {
         expenseService.deleteExpenseById(id);
-    }
-
-    @ResponseStatus(value = HttpStatus.CREATED)
-    @PostMapping("/expenses")
-    public Expense saveExpenseDetails(@Valid @RequestBody Expense expense) {
-        return expenseService.saveExpenseDetails(expense);
-    }
-
-    @PutMapping("/expenses/{id}")
-    public Expense updateExpenseDetails(@RequestBody Expense expense, @PathVariable Long id) {
-        return expenseService.updateExpenseDetails(id, expense);
     }
 
 }
