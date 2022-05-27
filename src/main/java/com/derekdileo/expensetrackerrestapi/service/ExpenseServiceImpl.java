@@ -1,13 +1,11 @@
 package com.derekdileo.expensetrackerrestapi.service;
 
 import com.derekdileo.expensetrackerrestapi.entity.Expense;
-import com.derekdileo.expensetrackerrestapi.exceptions.ExpenseNotFoundException;
+import com.derekdileo.expensetrackerrestapi.exceptions.ResourceNotFoundException;
 import com.derekdileo.expensetrackerrestapi.repository.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +32,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         if (expense.isPresent()) {
             return expense.get();
         }
-        throw new ExpenseNotFoundException("Expense is not found for the id: " + id);
+        throw new ResourceNotFoundException("Expense is not found for the id: " + id);
     }
 
     @Override
