@@ -24,6 +24,11 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
+    public Expense createExpense(Expense expense) {
+        return expenseRepo.save(expense);
+    }
+
+    @Override
     public Page<Expense> readExpenses(Pageable page) {
         // Call JPA repository method
         return expenseRepo.findAll(page);
@@ -63,15 +68,6 @@ public class ExpenseServiceImpl implements ExpenseService {
         throw new ResourceNotFoundException("Expense is not found for the id: " + id);
     }
 
-    @Override
-    public void deleteExpenseById(Long id) {
-        expenseRepo.deleteById(id);
-    }
-
-    @Override
-    public Expense createExpense(Expense expense) {
-        return expenseRepo.save(expense);
-    }
 
     @Override
     public Expense updateExpenseDetails(Long id, Expense expense) {
@@ -85,6 +81,12 @@ public class ExpenseServiceImpl implements ExpenseService {
         existingExpense.setAmount(expense.getAmount() != null ? expense.getAmount() : existingExpense.getAmount());
         existingExpense.setDate(expense.getDate() != null ? expense.getDate() : existingExpense.getDate());
         return expenseRepo.save(existingExpense);
+    }
+
+    @Override
+    public void deleteExpenseById(Long id) {
+        Expense expense = readExpenseById(id);
+        expenseRepo.delete(expense);
     }
 
 }
