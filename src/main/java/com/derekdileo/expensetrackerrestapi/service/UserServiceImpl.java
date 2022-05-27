@@ -59,4 +59,11 @@ public class UserServiceImpl implements UserService{
 
         return userRepo.save(existingUser);
     }
+
+    @Override
+    public void deleteUser(Long id) {
+        User existingUser = readUserById(id);
+        userRepo.delete(existingUser);
+    }
+
 }

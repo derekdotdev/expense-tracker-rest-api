@@ -2,6 +2,7 @@ package com.derekdileo.expensetrackerrestapi.controller;
 
 import com.derekdileo.expensetrackerrestapi.entity.User;
 import com.derekdileo.expensetrackerrestapi.entity.UserModel;
+import com.derekdileo.expensetrackerrestapi.exceptions.ResourceNotFoundException;
 import com.derekdileo.expensetrackerrestapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,12 @@ public class UserController {
     @PutMapping("/users/{id}")
     public ResponseEntity<User> updateUserById(@RequestBody User user, @PathVariable Long id) {
         return new ResponseEntity<User>(userService.updateUser(user, id), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<HttpStatus> deleteUserById(@PathVariable Long id) throws ResourceNotFoundException {
+        userService.deleteUser(id);
+        return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
     }
 
 }
