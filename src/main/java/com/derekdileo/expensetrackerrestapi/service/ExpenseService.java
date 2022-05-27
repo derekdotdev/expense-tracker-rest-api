@@ -9,20 +9,20 @@ import java.util.List;
 
 public interface ExpenseService {
 
-    Page<Expense> getExpenses(Pageable page);
-
-    List<Expense> getExpensesByCategory(String category, Pageable page);
-
-    List<Expense> getExpensesByName(String name, Pageable page);
-
-    List<Expense> getExpensesByDate(Date startDate, Date endDate, Pageable page);
-
-    Expense getExpenseById(Long id);
-
-    void deleteExpenseById(Long id);
-
     Expense createExpense(Expense expense);
 
+    Expense readExpenseById(Long id);
+
+    Page<Expense> readExpenses(Pageable page);
+
+    List<Expense> readExpensesByCategory(String category, Pageable page);
+
+    List<Expense> readExpensesByName(String name, Pageable page);
+
+    List<Expense> readExpensesByDate(Date startDate, Date endDate, Pageable page);
+
     Expense updateExpenseDetails(Long id, Expense expense);
+
+    void deleteExpenseById(Long id);
 
 }

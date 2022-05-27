@@ -24,23 +24,24 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public Page<Expense> getExpenses(Pageable page) {
+    public Page<Expense> readExpenses(Pageable page) {
         // Call JPA repository method
         return expenseRepo.findAll(page);
     }
 
     @Override
-    public List<Expense> getExpensesByCategory(String category, Pageable page) {
+    public List<Expense> readExpensesByCategory(String category, Pageable page) {
         return expenseRepo.findByCategory(category, page).toList();
     }
 
     @Override
-    public List<Expense> getExpensesByName(String name, Pageable page) {
+    public List<Expense> readExpensesByName(String name, Pageable page) {
         return expenseRepo.findByNameContaining(name, page).toList();
     }
 
     @Override
-    public List<Expense> getExpensesByDate(Date startDate, Date endDate, Pageable page) {
+    public List<Expense> readExpensesByDate(Date startDate, Date endDate, Pageable page) {
+        // null check for dates
         if (startDate == null) {
             startDate = new Date(0);
         }
@@ -48,13 +49,13 @@ public class ExpenseServiceImpl implements ExpenseService {
             endDate = new Date(System.currentTimeMillis());
         }
 
-        Page<Expense> pages = expenseRepo.findByDateBetween(startDate, endDate, page);
+        Page<Expense> expenses = expenseRepo.findByDateBetween(startDate, endDate, page);
 
-        return pages.toList();
+        return expenses.toList();
     }
 
     @Override
-    public Expense getExpenseById(Long id) {
+    public Expense readExpenseById(Long id) {
         Optional<Expense> expense = expenseRepo.findById(id);
         if (expense.isPresent()) {
             return expense.get();
@@ -75,7 +76,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public Expense updateExpenseDetails(Long id, Expense expense) {
         // Get existing expense object for comparison
-        Expense existingExpense = getExpenseById(id);
+        Expense existingExpense = readExpenseById(id);
 
         // Set fields to existing expense object (only if new information exists)
         existingExpense.setName(expense.getName() != null ? expense.getName() : existingExpense.getName());

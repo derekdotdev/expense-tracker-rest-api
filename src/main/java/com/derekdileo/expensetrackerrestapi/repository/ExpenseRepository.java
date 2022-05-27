@@ -10,7 +10,7 @@ import com.derekdileo.expensetrackerrestapi.entity.Expense;
 import java.sql.Date;
 
 /*
-* A class to query the database using JPA methods which can be found at:
+* A class to query the database using JPA finder methods which can be found at:
 * https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods
 * */
 @Repository
