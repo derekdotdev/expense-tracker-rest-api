@@ -31,6 +31,7 @@ public class UserServiceImpl implements UserService{
 
         // copyWith and persist to repo
         BeanUtils.copyProperties(user, newUser);
+
         return userRepository.save(newUser);
     }
 }
