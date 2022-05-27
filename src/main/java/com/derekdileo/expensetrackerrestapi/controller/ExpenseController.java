@@ -27,10 +27,16 @@ public class ExpenseController {
         return expenseService.getAllExpenses(page).toList();
     }
 
+    @GetMapping("/expenses/category")
+    public List<Expense> getAllExpensesByCategory(@RequestParam String category, Pageable page) {
+        return expenseService.readByCategory(category, page);
+    }
+
     @GetMapping("/expenses/{id}")
     public Expense getExpenseById(@PathVariable("id") Long id) {
         return expenseService.getExpenseById(id);
     }
+
 
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @DeleteMapping("/expenses")
