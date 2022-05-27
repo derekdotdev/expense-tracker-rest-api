@@ -4,6 +4,8 @@ import com.derekdileo.expensetrackerrestapi.entity.Expense;
 import com.derekdileo.expensetrackerrestapi.exceptions.ResourceNotFoundException;
 import com.derekdileo.expensetrackerrestapi.repository.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,9 +23,9 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public List<Expense> getAllExpenses() {
+    public Page<Expense> getAllExpenses(Pageable page) {
         // Call JPA repository method
-        return expenseRepo.findAll();
+        return expenseRepo.findAll(page);
     }
 
     @Override

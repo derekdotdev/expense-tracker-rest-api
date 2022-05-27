@@ -3,6 +3,7 @@ package com.derekdileo.expensetrackerrestapi.controller;
 import com.derekdileo.expensetrackerrestapi.entity.Expense;
 import com.derekdileo.expensetrackerrestapi.service.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +22,8 @@ public class ExpenseController {
     }
 
     @GetMapping("/expenses")
-    public List<Expense> getAllExpenses() {
-        return expenseService.getAllExpenses();
+    public List<Expense> getAllExpenses(Pageable page) {
+        return expenseService.getAllExpenses(page).toList();
     }
 
     @GetMapping("/expenses/{id}")
