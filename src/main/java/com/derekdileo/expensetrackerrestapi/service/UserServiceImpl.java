@@ -3,6 +3,7 @@ package com.derekdileo.expensetrackerrestapi.service;
 import com.derekdileo.expensetrackerrestapi.entity.User;
 import com.derekdileo.expensetrackerrestapi.entity.UserModel;
 import com.derekdileo.expensetrackerrestapi.exceptions.ItemAlreadyExistsException;
+import com.derekdileo.expensetrackerrestapi.exceptions.ResourceNotFoundException;
 import com.derekdileo.expensetrackerrestapi.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +34,12 @@ public class UserServiceImpl implements UserService{
         BeanUtils.copyProperties(user, newUser);
 
         return userRepository.save(newUser);
+    }
+
+    @Override
+    public User readUserById(Long id) {
+        // findById returns Optional. Use orElseThrow method to handle user not found
+        return userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("User not found for the id: " + id));
     }
 }
