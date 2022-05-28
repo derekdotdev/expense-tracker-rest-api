@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.derekdileo.expensetrackerrestapi.entity.Expense;
 
 import java.sql.Date;
+import java.util.Optional;
 
 /*
 * A class to query the database using JPA finder methods which can be found at:
@@ -24,5 +25,11 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
     // SELECT * FROM tbl_expenses WHERE date BETWEEN 'startDate' AND 'endDate'
     Page<Expense> findByDateBetween(Date startDate, Date endDate, Pageable page);
+
+    // SELECT * FROM tbl_expenses WHERE user_id=?
+    Page<Expense> findByUserId(Long userId, Pageable page);
+
+    // SELECT * FROM tbl_expenses WHERE user_id=? AND id=?
+    Optional<Expense> findByUserIdAndId(Long userId, Long expenseId);
 
 }

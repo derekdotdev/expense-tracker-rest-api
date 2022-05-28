@@ -34,7 +34,8 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public Page<Expense> readExpenses(Pageable page) {
         // Call JPA repository method
-        return expenseRepo.findAll(page);
+        return expenseRepo.findByUserId(
+                userService.getLoggedInUser().getId(), page);
     }
 
     @Override
@@ -64,7 +65,9 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public Expense readExpenseById(Long id) {
-        Optional<Expense> expense = expenseRepo.findById(id);
+        Optional<Expense> expense =
+                expenseRepo.findByUserIdAndId(
+                        userService.getLoggedInUser().getId(), id);
         if (expense.isPresent()) {
             return expense.get();
         }
