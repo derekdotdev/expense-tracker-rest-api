@@ -15,16 +15,19 @@ import java.util.Optional;
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
 
-    // Runtime constructor-based injection of ExpenseRepository dependency
+    // Runtime constructor-based injection of ExpenseRepository and UserService dependencies
     private final ExpenseRepository expenseRepo;
+    private final UserService userService;
 
     @Autowired
-    public ExpenseServiceImpl(ExpenseRepository expenseRepo) {
+    public ExpenseServiceImpl(ExpenseRepository expenseRepo, UserService userService) {
         this.expenseRepo = expenseRepo;
+        this.userService = userService;
     }
 
     @Override
     public Expense createExpense(Expense expense) {
+        expense.setUser(userService.getLoggedInUser());
         return expenseRepo.save(expense);
     }
 

@@ -60,12 +60,12 @@ public class Expense {
     private Timestamp updatedAt;
 
     // (Unidirectional) Many expenses are mapped to a single user
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     // Create new column inside expense table, not nullable
-    @JoinColumn(name = "user_id", nullable = false) //
     // When user is deleted, delete all expenses
-    @OnDelete(action = OnDeleteAction.CASCADE)
     // When fetching expense, hide user
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private User user;
 
