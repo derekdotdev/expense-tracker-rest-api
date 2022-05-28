@@ -47,18 +47,18 @@ public class UserServiceImpl implements UserService{
         // Persist to repo
         return userRepo.save(newUser);
     }
-
     @Override
-    public User readUserById(Long id) {
+    public User readUser() {
         // findById returns Optional. Use orElseThrow method to handle user not found
-        return userRepo.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("User not found for the id: " + id));
+        Long userId = getLoggedInUser().getId();
+        return userRepo.findById(userId).orElseThrow(
+                () -> new ResourceNotFoundException("User not found for the id: " + userId));
     }
 
     @Override
-    public User updateUser(User user, Long id) {
+    public User updateUser(UserModel user) {
         // Get existing user object for comparison
-        User existingUser = readUserById(id);
+        User existingUser = readUser();
 
         // Set fields to existing user object (only if new information exists)
         existingUser.setName(user.getName() != null ? user.getName() : existingUser.getName());
@@ -74,8 +74,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void deleteUser(Long id) {
-        User existingUser = readUserById(id);
+    public void deleteUser() {
+        User existingUser = readUser();
         userRepo.delete(existingUser);
     }
 

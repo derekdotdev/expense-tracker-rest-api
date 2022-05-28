@@ -9,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 @RestController
 public class UserController {
 
@@ -23,19 +21,19 @@ public class UserController {
     }
 
 
-    @GetMapping("/users/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return new ResponseEntity<User>(userService.readUserById(id), HttpStatus.OK);
+    @GetMapping("/profile")
+    public ResponseEntity<User> readUser() {
+        return new ResponseEntity<User>(userService.readUser(), HttpStatus.OK);
     }
 
-    @PutMapping("/users/{id}")
-    public ResponseEntity<User> updateUserById(@RequestBody User user, @PathVariable Long id) {
-        return new ResponseEntity<User>(userService.updateUser(user, id), HttpStatus.OK);
+    @PutMapping("/profile")
+    public ResponseEntity<User> updateUser(@RequestBody UserModel user) {
+        return new ResponseEntity<User>(userService.updateUser(user), HttpStatus.OK);
     }
 
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<HttpStatus> deleteUserById(@PathVariable Long id) throws ResourceNotFoundException {
-        userService.deleteUser(id);
+    @DeleteMapping("/deactivate")
+    public ResponseEntity<HttpStatus> deleteUser() throws ResourceNotFoundException {
+        userService.deleteUser();
         return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
     }
 
