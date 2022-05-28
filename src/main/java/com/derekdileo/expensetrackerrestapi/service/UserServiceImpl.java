@@ -7,32 +7,41 @@ import com.derekdileo.expensetrackerrestapi.exceptions.ResourceNotFoundException
 import com.derekdileo.expensetrackerrestapi.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService{
 
-    // Runtime constructor-based injection of UserRepository dependency
+    // Runtime constructor-based injection of UserRepository & BcryptEncoder dependencies
     private final UserRepository userRepo;
+    private final PasswordEncoder bcryptEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepo) {
+    public UserServiceImpl(UserRepository userRepo, PasswordEncoder bcryptEncoder) {
         this.userRepo = userRepo;
+        this.bcryptEncoder = bcryptEncoder;
     }
 
     @Override
     public User createUser(UserModel user) {
         // Validate email is unique
         if (userRepo.existsByEmail(user.getEmail())) {
-            throw new ItemAlreadyExistsException("An account already exists with email: " + user.getEmail());
+            throw new ItemAlreadyExistsException(
+                    "An account already exists with email: " + user.getEmail());
         }
 
         // Create User entity
         User newUser = new User();
 
-        // copyWith and persist to repo
+        // copyWith
         BeanUtils.copyProperties(user, newUser);
 
+        // Encrypt password
+        newUser.setPassword(bcryptEncoder.encode(newUser.getPassword()));
+
+        // Persist to repo
         return userRepo.save(newUser);
     }
 
@@ -53,7 +62,8 @@ public class UserServiceImpl implements UserService{
 
         existingUser.setEmail(user.getEmail() != null ? user.getEmail() : existingUser.getEmail());
 
-        existingUser.setPassword(user.getPassword() != null ? user.getPassword() : existingUser.getPassword());
+        existingUser.setPassword(user.getPassword() != null ?
+                bcryptEncoder.encode(user.getPassword()) : existingUser.getPassword());
 
         existingUser.setDob(user.getDob() != null ? user.getDob() : existingUser.getDob());
 
