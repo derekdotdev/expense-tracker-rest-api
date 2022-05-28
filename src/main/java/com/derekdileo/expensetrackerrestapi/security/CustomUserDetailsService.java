@@ -3,6 +3,11 @@ package com.derekdileo.expensetrackerrestapi.security;
 import com.derekdileo.expensetrackerrestapi.entity.User;
 import com.derekdileo.expensetrackerrestapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.authentication.AuthenticationManagerFactoryBean;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,5 +35,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 existingUser.getEmail(), existingUser.getPassword(), new ArrayList<>());
     }
+
+//    @Bean
+//    public AuthenticationManager authenticationManager() {
+//      return new AuthenticationManagerFactoryBean();
+//    }
 
 }
