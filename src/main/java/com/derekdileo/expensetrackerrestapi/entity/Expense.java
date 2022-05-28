@@ -1,9 +1,12 @@
 package com.derekdileo.expensetrackerrestapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -55,5 +58,15 @@ public class Expense {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Timestamp updatedAt;
+
+    // (Unidirectional) Many expenses are mapped to a single user
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    // Create new column inside expense table, not nullable
+    @JoinColumn(name = "user_id", nullable = false) //
+    // When user is deleted, delete all expenses
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    // When fetching expense, hide user
+    @JsonIgnore
+    private User user;
 
 }
