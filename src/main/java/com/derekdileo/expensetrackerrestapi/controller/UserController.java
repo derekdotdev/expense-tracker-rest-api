@@ -14,7 +14,7 @@ import javax.validation.Valid;
 @RestController
 public class UserController {
 
-    // Runtime constructor-based injection of ExpenseService dependency
+    // Runtime constructor-based injection of UserService dependency
     private final UserService userService;
 
     @Autowired
