@@ -1,17 +1,20 @@
 package com.derekdileo.expensetrackerrestapi.config;
 
 import com.derekdileo.expensetrackerrestapi.security.CustomUserDetailsService;
+import com.derekdileo.expensetrackerrestapi.security.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 // WebSecurityConfigurerAdapter is deprecated. How do we resolve this?
 @Configuration
@@ -26,6 +29,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.userDetailsService = userDetailsService;
     }
 
+    @Bean
+    public JwtRequestFilter authenticationJwtTokenFilter() {
+        return new JwtRequestFilter();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -34,8 +41,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login", "/register").permitAll()
                 .anyRequest().authenticated()
-                .and()
-                .httpBasic();
+                .and()// Tell Spring Security to not maintain any sessions. Set session as stateless
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        // Use custom token filter before UsernamePassword filter
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.httpBasic();
     }
 
     @Override
